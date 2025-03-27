@@ -29,6 +29,13 @@ export type BuilderContentProps<ContentType> = {
    * @see content
    */
   inline?: boolean;
+
+  /**
+   * Pass in an explicit variant ID to render.
+   * Used to support server side rendering of a chosen variant.
+   */
+  explicitVariantId?: string;
+
   /**
    * @package
    * @deprecated
@@ -314,7 +321,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     const useData: any = this.data;
     const TagName = this.props.dataOnly ? NoWrap : 'div';
     return (
-      <VariantsProvider initialContent={useData}>
+      <VariantsProvider initialContent={useData} explicitVariantId={this.props.explicitVariantId}>
         {(variants, renderScript) => {
           return (
             <React.Fragment>

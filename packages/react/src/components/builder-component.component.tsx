@@ -153,6 +153,13 @@ export interface BuilderComponentProps {
   /**
    * Content entry ID for this component to fetch client side
    */
+
+  /**
+   * Pass in an explicit variant ID to render.
+   * Used to support server side rendering of a chosen variant.
+   */
+  explicitVariantId?: string;
+
   entry?: string;
   /**
    * @package
@@ -1061,6 +1068,7 @@ export class BuilderComponent extends React.Component<
                           ? 'null-content-prop'
                           : 'no-content-prop')
                       }
+                      explicitVariantId={this.props.explicitVariantId}
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
                       // TODO: pass entry in

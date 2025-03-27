@@ -98,10 +98,11 @@ const variantsScript = (variantsString: string, contentId: string) =>
 
 interface VariantsProviderProps {
   initialContent: BuilderContent;
+  explicitVariantId?: string;
   children: (variants: BuilderContent[], renderScript?: () => JSX.Element) => JSX.Element;
 }
 
-export const VariantsProvider = ({ initialContent, children }: VariantsProviderProps) => {
+export const VariantsProvider = ({ initialContent, explicitVariantId, children }: VariantsProviderProps) => {
   if (Builder.isBrowser && !builder.canTrack) {
     return children([initialContent]);
   }
@@ -117,6 +118,11 @@ export const VariantsProvider = ({ initialContent, children }: VariantsProviderP
   }));
 
   const allVariants = [...variants, initialContent];
+
+  if (explicitVariantId) {
+    return children([allVariants.find(item => item.id === explicitVariantId)!]);
+  }
+
   if (Builder.isServer) {
     const variantsJson = JSON.stringify(
       Object.keys(initialContent.variations || {}).map(item => ({
